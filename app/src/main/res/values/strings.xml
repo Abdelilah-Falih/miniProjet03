@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string-array name="images_links">
+        <item>
+            https://iili.io/H4a4t7S.png
+        </item>
+        <item>
+            https://iili.io/H4a4Dk7.png
+        </item>
+        <item>
+            https://iili.io/H4a4Z22.png
+        </item>
+        <item>
+            https://iili.io/H4a4bp9.png
+        </item>
+        <item>
+            https://iili.io/H4a4pIe.png
+        </item>
+    </string-array>
 </resources>
