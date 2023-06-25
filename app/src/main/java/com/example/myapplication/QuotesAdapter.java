@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.Quote;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHolder>{
@@ -29,7 +30,8 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
             sarcoline = Color.rgb(255, 221, 170);
 
     private int index = 1;
-    int selected_quotes = 0;
+    int selected_quotes_counter = 0;
+    List<Quote> selected_quotes = new ArrayList<>();
 
     public QuotesAdapter(Context context, List<Quote> quotes, FragmentManager fragmentManager){
         this.context = context;
@@ -53,18 +55,19 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
         holder.btn_update.setOnClickListener(v->{
             FragmentUpdate fragmentUpdate = new FragmentUpdate(quote, this);
             fragmentUpdate.show(fragmentManager, "TAG");
-            Toast.makeText(context, ""+quote.getId(), Toast.LENGTH_SHORT).show();
         });
 
         holder.cb_select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    selected_quotes ++;
-                    MyQuotes.showSelectedQuotes(selected_quotes);
+                    selected_quotes_counter++;
+                    selected_quotes.add(quote);
+                    MyQuotes.showSelectedQuotes(selected_quotes_counter);
                 }else{
-                    selected_quotes --;
-                    MyQuotes.showSelectedQuotes(selected_quotes);
+                    selected_quotes_counter--;
+                    selected_quotes.remove(quote);
+                    MyQuotes.showSelectedQuotes(selected_quotes_counter);
                 }
             }
         });

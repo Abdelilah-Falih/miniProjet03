@@ -15,6 +15,7 @@ import com.example.myapplication.QuotesAdapter;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityMyQuotesBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyQuotes extends AppCompatActivity {
@@ -24,7 +25,6 @@ public class MyQuotes extends AppCompatActivity {
     QuoteDao quoteDao;
     List<Quote> quotes;
     public QuotesAdapter adapter;
-    public static int selected_quote_to_delete;
     private static Button btn_delete;
 
     @Override
@@ -40,16 +40,22 @@ public class MyQuotes extends AppCompatActivity {
         quoteDao = database.getQao();
         btn_delete = binding.btnDelete;
 
-
-
-
-        loadQuotes();
-
-
         binding.includeFormule.btnAddUpdate.setOnClickListener(v->{
             addNewQuote();
 
         });
+
+        binding.btnDelete.setOnClickListener(v->{
+            List<Quote> quotesToDelete = adapter.selected_quotes;
+            for(Quote quoteToDelete : quotesToDelete){
+                quoteDao.deleteQuote(quoteToDelete);
+            }
+            adapter.selected_quotes_counter = 0;
+            MyQuotes.showSelectedQuotes(0);
+            loadQuotes();
+        });
+
+        loadQuotes();
     }
 
     private void loadQuotes() {
@@ -71,7 +77,8 @@ public class MyQuotes extends AppCompatActivity {
     }
 
     public static void showSelectedQuotes(int selected_quotes){
-        selected_quote_to_delete = selected_quotes;
-        btn_delete.setText("Delete("+selected_quote_to_delete+")");
+        btn_delete.setText("Delete("+selected_quotes+")");
     }
+
+
 }
