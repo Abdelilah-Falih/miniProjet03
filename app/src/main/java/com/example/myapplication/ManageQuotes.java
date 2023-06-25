@@ -10,11 +10,8 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.myapplication.Database.MyQuotes;
-import com.example.myapplication.Database.Quote;
 import com.example.myapplication.Database.QuoteDao;
 import com.example.myapplication.Database.QuoteDatabase;
 import com.example.myapplication.NetworkInfo.NetworkInformation;

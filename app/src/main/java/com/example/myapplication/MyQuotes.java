@@ -1,11 +1,16 @@
-package com.example.myapplication.Database;
+package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.example.myapplication.Database.Quote;
+import com.example.myapplication.Database.QuoteDao;
+import com.example.myapplication.Database.QuoteDatabase;
 import com.example.myapplication.QuotesAdapter;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityMyQuotesBinding;
@@ -33,10 +38,14 @@ public class MyQuotes extends AppCompatActivity {
 
         quotes = quoteDao.getAllQuotes();
 
-        QuotesAdapter adapter = new QuotesAdapter(this, quotes);
+        QuotesAdapter adapter = new QuotesAdapter(this, quotes, getSupportFragmentManager());
 
         binding.rvMyQuotes.setAdapter(adapter);
         binding.rvMyQuotes.setLayoutManager(new LinearLayoutManager(this));
 
+
+        binding.includeFormule.btnAddUpdate.setOnClickListener(v->{
+            Toast.makeText(this, "Add", Toast.LENGTH_SHORT).show();
+        });
     }
 }

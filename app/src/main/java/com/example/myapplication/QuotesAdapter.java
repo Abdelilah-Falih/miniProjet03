@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.Quote;
@@ -20,14 +21,16 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
     List<Quote> quotes;
 
     Context context;
+    FragmentManager fragmentManager;
     int atrovirens = Color.rgb(13, 148, 148),
             coral = Color.rgb(255, 127, 80),
             sarcoline = Color.rgb(255, 221, 170);
 
     private int index = 1;
-    public QuotesAdapter(Context context, List<Quote> quotes){
+    public QuotesAdapter(Context context, List<Quote> quotes, FragmentManager fragmentManager){
         this.context = context;
         this.quotes = quotes;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -42,6 +45,12 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
         Quote quote = quotes.get(position);
         holder.tv_quote.setText(quote.getQuote());
         holder.tv_author.setText(quote.getAuthor());
+
+        holder.btn_update.setOnClickListener(v->{
+            FragmentUpdate fragmentUpdate = new FragmentUpdate(quote);
+            fragmentUpdate.show(fragmentManager, "TAG");
+        });
+
         if(index ==1){
             holder.itemView.setBackgroundColor(atrovirens);
         }else if (index == 2){
@@ -66,8 +75,8 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
         CheckBox cb_select;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_quote = itemView.findViewById(R.id.tv_quote);
-            tv_author = itemView.findViewById(R.id.tv_author);
+            tv_quote = itemView.findViewById(R.id.et_quote_formule);
+            tv_author = itemView.findViewById(R.id.et_author_formule);
             btn_update = itemView.findViewById(R.id.btn_update);
             cb_select = itemView.findViewById(R.id.cb_select);
         }

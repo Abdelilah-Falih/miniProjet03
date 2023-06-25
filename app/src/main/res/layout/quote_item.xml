@@ -7,7 +7,7 @@
     android:layout_marginBottom="15dp">
 
     <TextView
-        android:id="@+id/tv_quote"
+        android:id="@+id/et_quote_formule"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -23,15 +23,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_author"
+        android:id="@+id/et_author_formule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="casual"
         android:text="Author"
-        app:layout_constraintEnd_toEndOf="@+id/tv_quote"
-        app:layout_constraintStart_toStartOf="@+id/tv_quote"
-        app:layout_constraintTop_toBottomOf="@+id/tv_quote" />
+        app:layout_constraintEnd_toEndOf="@+id/et_quote_formule"
+        app:layout_constraintStart_toStartOf="@+id/et_quote_formule"
+        app:layout_constraintTop_toBottomOf="@+id/et_quote_formule" />
 
     <Button
         android:id="@+id/btn_update"
@@ -43,7 +43,7 @@
         android:text="Update"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_author" />
+        app:layout_constraintTop_toBottomOf="@+id/et_author_formule" />
 
     <CheckBox
         android:id="@+id/cb_select"
