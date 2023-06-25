@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -27,6 +28,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
             sarcoline = Color.rgb(255, 221, 170);
 
     private int index = 1;
+
     public QuotesAdapter(Context context, List<Quote> quotes, FragmentManager fragmentManager){
         this.context = context;
         this.quotes = quotes;
@@ -49,6 +51,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
         holder.btn_update.setOnClickListener(v->{
             FragmentUpdate fragmentUpdate = new FragmentUpdate(quote);
             fragmentUpdate.show(fragmentManager, "TAG");
+            Toast.makeText(context, ""+quote.getId(), Toast.LENGTH_SHORT).show();
         });
 
         if(index ==1){

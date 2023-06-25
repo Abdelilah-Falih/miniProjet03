@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Quote {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private  int id;
 
     private String quote;
@@ -41,8 +41,7 @@ public class Quote {
     //endregion
 
 
-    public Quote(int id, String quote, String author) {
-        setId(id);
+    public Quote(String quote, String author) {
         setQuote(quote);
         setAuthor(author);
     }
