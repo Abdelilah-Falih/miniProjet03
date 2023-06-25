@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
             sarcoline = Color.rgb(255, 221, 170);
 
     private int index = 1;
+    int selected_quotes = 0;
 
     public QuotesAdapter(Context context, List<Quote> quotes, FragmentManager fragmentManager){
         this.context = context;
@@ -52,6 +54,19 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
             FragmentUpdate fragmentUpdate = new FragmentUpdate(quote, this);
             fragmentUpdate.show(fragmentManager, "TAG");
             Toast.makeText(context, ""+quote.getId(), Toast.LENGTH_SHORT).show();
+        });
+
+        holder.cb_select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    selected_quotes ++;
+                    MyQuotes.showSelectedQuotes(selected_quotes);
+                }else{
+                    selected_quotes --;
+                    MyQuotes.showSelectedQuotes(selected_quotes);
+                }
+            }
         });
 
         if(index ==1){

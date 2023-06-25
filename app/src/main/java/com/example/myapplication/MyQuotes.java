@@ -24,6 +24,8 @@ public class MyQuotes extends AppCompatActivity {
     QuoteDao quoteDao;
     List<Quote> quotes;
     public QuotesAdapter adapter;
+    public static int selected_quote_to_delete;
+    private static Button btn_delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class MyQuotes extends AppCompatActivity {
        
         database = QuoteDatabase.getINSTANCE(this);
         quoteDao = database.getQao();
+        btn_delete = binding.btnDelete;
 
 
 
@@ -65,5 +68,10 @@ public class MyQuotes extends AppCompatActivity {
         binding.includeFormule.etAuthorFormule.setText("");
         binding.includeFormule.etQuoteFormule.setText("");
 
+    }
+
+    public static void showSelectedQuotes(int selected_quotes){
+        selected_quote_to_delete = selected_quotes;
+        btn_delete.setText("Delete("+selected_quote_to_delete+")");
     }
 }
