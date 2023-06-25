@@ -23,7 +23,7 @@ public class MyQuotes extends AppCompatActivity {
     QuoteDatabase database;
     QuoteDao quoteDao;
     List<Quote> quotes;
-    QuotesAdapter adapter;
+    public QuotesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -49,7 +49,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
         holder.tv_author.setText(quote.getAuthor());
 
         holder.btn_update.setOnClickListener(v->{
-            FragmentUpdate fragmentUpdate = new FragmentUpdate(quote);
+            FragmentUpdate fragmentUpdate = new FragmentUpdate(quote, this);
             fragmentUpdate.show(fragmentManager, "TAG");
             Toast.makeText(context, ""+quote.getId(), Toast.LENGTH_SHORT).show();
         });
