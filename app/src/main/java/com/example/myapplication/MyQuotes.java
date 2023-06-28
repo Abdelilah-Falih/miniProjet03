@@ -4,10 +4,13 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.work.Constraints;
 import androidx.work.Data;
+import androidx.work.ListenableWorker;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.Manifest;
@@ -90,14 +93,23 @@ public class MyQuotes extends AppCompatActivity {
     }
 
     private void saveFile() {
-
-        MyWorker.quotes = (ArrayList<Quote>) quotes;
+        //MyWorker.quotes = (ArrayList<Quote>) quotes;
         Constraints constraints = new Constraints.Builder()
                 .setRequiresBatteryNotLow(true).build();
         request = new OneTimeWorkRequest.Builder(MyWorker.class)
                 .setConstraints(constraints)
                 .build();
         WorkManager.getInstance().enqueue(request);
+        WorkManager.getInstance().getWorkInfoByIdLiveData(request.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        if (workInfo.getState().name().equals("SUCCEEDED")){
+                            Toast.makeText(MyQuotes.this, "Saved Successfully", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
     }
 
     ActivityResultLauncher<String[]> resultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
@@ -128,6 +140,7 @@ public class MyQuotes extends AppCompatActivity {
             binding.rvMyQuotes.setAdapter(adapter);
             binding.rvMyQuotes.setLayoutManager(new LinearLayoutManager(this));
 
+            MyWorker.quotes = (ArrayList<Quote>) quotes;
             cursor.close();
         }
     }
@@ -135,8 +148,6 @@ public class MyQuotes extends AppCompatActivity {
     private void addNewQuote() {
         String quote_text = binding.includeFormule.etQuoteFormule.getText().toString();
         String quote_author = binding.includeFormule.etAuthorFormule.getText().toString();
-//        Quote quote = new Quote(quote_text, quote_author);
-//        quoteDao.addQuote(quote);
         ContentValues values = new ContentValues();
         values.put("id", ++id);
         values.put("quote", quote_text);

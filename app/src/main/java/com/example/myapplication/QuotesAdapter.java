@@ -122,6 +122,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
             }
             cursor.close();
         }
+        MyWorker.quotes = (ArrayList<Quote>) quotes;
         notifyDataSetChanged();
         return id;
     }

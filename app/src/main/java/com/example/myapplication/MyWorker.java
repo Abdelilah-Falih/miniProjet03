@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -57,8 +59,8 @@ public class MyWorker extends Worker {
             manager.createNotificationChannel(channel);
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "chanel_id")
-                .setContentTitle("this is notification")
-                .setContentText("hello from falih")
+                .setContentTitle("Save to Download Folder")
+                .setContentText("Done")
                 .setSmallIcon(R.drawable.ic_launcher_foreground);
         manager.notify(1, builder.build());
 
