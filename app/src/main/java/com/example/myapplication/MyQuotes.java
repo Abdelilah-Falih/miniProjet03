@@ -1,9 +1,18 @@
 package com.example.myapplication;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import android.Manifest;
 import android.content.ContentValues;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +28,9 @@ import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityMyQuotesBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyQuotes extends AppCompatActivity {
     ActivityMyQuotesBinding binding;
@@ -32,6 +43,8 @@ public class MyQuotes extends AppCompatActivity {
     Uri contentUri = Uri.parse("content://com.example.myapp.provider/quote");
     Cursor cursor ;
     int id = 0;
+
+    OneTimeWorkRequest request ;
 
 
     @Override
@@ -62,9 +75,43 @@ public class MyQuotes extends AppCompatActivity {
             MyQuotes.showSelectedQuotes(0);
             adapter.loadQuotes();
         });
+        binding.imageView.setOnClickListener(v->{
+            requestPer();
+        });
 
         loadQuotes();
     }
+
+    private void requestPer() {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            resultLauncher.launch(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE});
+        }
+        else saveFile();
+    }
+
+    private void saveFile() {
+
+        MyWorker.quotes = (ArrayList<Quote>) quotes;
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresBatteryNotLow(true).build();
+        request = new OneTimeWorkRequest.Builder(MyWorker.class)
+                .setConstraints(constraints)
+                .build();
+        WorkManager.getInstance().enqueue(request);
+    }
+
+    ActivityResultLauncher<String[]> resultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+        boolean allGranted = true;
+        for (String key : result.keySet()){
+            if (!result.get(key)) {
+                allGranted = false;
+                break;
+            }
+        }
+        if (allGranted){
+            saveFile();
+        }
+    });
 
     private void loadQuotes() {
         cursor = getContentResolver().query(contentUri, null, null, null, null);

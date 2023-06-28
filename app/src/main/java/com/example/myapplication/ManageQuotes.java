@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -35,7 +36,7 @@ public class ManageQuotes extends AppCompatActivity {
 
     int id = 0;
     Cursor cursor;
-
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,7 @@ public class ManageQuotes extends AppCompatActivity {
         btn_go = findViewById(R.id.btn_go);
         cursor = getContentResolver().query(contentUri, null, null, null, null);
 
+        sharedPreferences = getSharedPreferences("first_log", MODE_PRIVATE);
 
         images_links = getResources().getStringArray(R.array.images_links);
         x = new Random().nextInt(5);
@@ -54,8 +56,11 @@ public class ManageQuotes extends AppCompatActivity {
         quoteDao = database.getQao();
 
         btn_go.setOnClickListener(v->{
-            addQuote();
+            if(sharedPreferences.getBoolean("first_time", true))
+                addQuote();
+            startActivity(new Intent(this, MyQuotes.class));
         });
+
 
 
 
@@ -63,8 +68,7 @@ public class ManageQuotes extends AppCompatActivity {
     }
 
     private void addQuote() {
-
-        /*addNewQuote(new Quote("Be yourself; everyone else is already taken", "Oscar Wilde"));
+        addNewQuote(new Quote("Be yourself; everyone else is already taken", "Oscar Wilde"));
         addNewQuote(new Quote("If you tell the truth, you don't have to remember anything", "Mark Twain"));
         addNewQuote(new Quote("To live is the rarest thing in the world. Most people exist, that is all", "Oscar Wilde"));
         addNewQuote(new Quote("To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment", "Ralph Waldo Emerson"));
@@ -76,8 +80,9 @@ public class ManageQuotes extends AppCompatActivity {
         addNewQuote(new Quote( "Clean code always looks like it was written by someone who cares", "obert C. Martin"));
         addNewQuote(new Quote( "Experience is the name everyone gives to their mistakes", "Oscar Wilde"));
         addNewQuote(new Quote("Of course, bad code can be cleaned up. But it’s very expensive.", "Robert C. Martin"));
-         */
-        startActivity(new Intent(this, MyQuotes.class));
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("first_time", false);
+        editor.apply();
     }
 
 
