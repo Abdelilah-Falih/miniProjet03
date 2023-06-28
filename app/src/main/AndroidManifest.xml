@@ -15,6 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
+        <provider
+            android:name=".Provider.MyContentProvider"
+            android:authorities="com.example.myapp.provider"
+            android:enabled="true"
+            android:exported="true">
+
+        </provider>
+
         <activity
             android:name=".MyQuotes"
             android:exported="false" />

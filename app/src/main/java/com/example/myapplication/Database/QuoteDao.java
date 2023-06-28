@@ -6,14 +6,13 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
 public interface QuoteDao {
 
     @Insert
-    void addQuote(Quote quote);
+    long addQuote(Quote quote);
 
     @Update
     void updateQuote(Quote quote);
@@ -23,4 +22,7 @@ public interface QuoteDao {
 
     @Query("select * from Quote")
     List<Quote> getAllQuotes();
+
+    @Query("delete from quote where id =:parseId")
+    void deleteQuoteById(long parseId);
 }

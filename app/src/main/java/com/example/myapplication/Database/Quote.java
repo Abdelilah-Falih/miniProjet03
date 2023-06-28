@@ -1,6 +1,7 @@
 package com.example.myapplication.Database;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -14,6 +15,7 @@ public class Quote {
     private String author;
 
     //region getters & setters
+
 
     public int getId() {
         return id;
@@ -41,7 +43,15 @@ public class Quote {
     //endregion
 
 
-    public Quote(String quote, String author) {
+    @Ignore
+    public Quote(){}
+    @Ignore
+    public Quote(String quote, String author){
+        setQuote(quote);
+        setAuthor(author);
+    }
+    public Quote(int id,String quote, String author) {
+        setId(id);
         setQuote(quote);
         setAuthor(author);
     }

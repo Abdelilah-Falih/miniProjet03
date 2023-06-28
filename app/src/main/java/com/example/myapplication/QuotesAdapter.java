@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.Quote;
@@ -32,6 +35,9 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
     private int index = 1;
     int selected_quotes_counter = 0;
     List<Quote> selected_quotes = new ArrayList<>();
+    Uri contentUri = Uri.parse("content://com.example.myapp.provider/quote");
+    Cursor cursor;
+
 
     public QuotesAdapter(Context context, List<Quote> quotes, FragmentManager fragmentManager){
         this.context = context;
@@ -101,5 +107,22 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.MyViewHold
             btn_update = itemView.findViewById(R.id.btn_update);
             cb_select = itemView.findViewById(R.id.cb_select);
         }
+    }
+    public int loadQuotes() {
+        int id =0;
+        cursor = context.getContentResolver().query(contentUri, null, null, null, null);
+        quotes = new ArrayList<>();
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                int _id = cursor.getInt(cursor.getColumnIndex("id"));
+                String quote = cursor.getString(cursor.getColumnIndex("quote"));
+                String author = cursor.getString(cursor.getColumnIndex("author"));
+                quotes.add(new Quote(_id, quote, author));
+                id = _id;
+            }
+            cursor.close();
+        }
+        notifyDataSetChanged();
+        return id;
     }
 }

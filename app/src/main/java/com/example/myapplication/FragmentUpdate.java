@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ public class FragmentUpdate extends DialogFragment {
     EditText et_quote , et_author;
     Button btn_add_update;
     QuotesAdapter adapter;
+    Uri contentUri = Uri.parse("content://com.example.myapp.provider/quote");
+
 
     public FragmentUpdate(Quote quote, QuotesAdapter adapter){
         this.quote = quote;
@@ -55,10 +59,13 @@ public class FragmentUpdate extends DialogFragment {
     private void updateQuote() {
         String updeteedQuoteText = et_quote.getText().toString();
         String updeteedQuoteAuthor = et_author.getText().toString();
-        quote.setQuote(updeteedQuoteText);
-        quote.setAuthor(updeteedQuoteAuthor);
-        quoteDao.updateQuote(quote);
-        adapter.notifyDataSetChanged();
+        ContentValues cv = new ContentValues();
+        Toast.makeText(getContext(), ""+quote.getId(), Toast.LENGTH_SHORT).show();
+        cv.put("id", quote.getId());
+        cv.put("quote", updeteedQuoteText);
+        cv.put("author", updeteedQuoteAuthor);
+        requireActivity().getContentResolver().update(contentUri, cv, null, null);
+        adapter.loadQuotes();
         dismiss();
     }
 }
